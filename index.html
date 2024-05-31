@@ -88,6 +88,14 @@
   </main>
 
   <script>
+
+    class CalculationError extends Error {
+          constructor(message) {
+            super(message);
+            this.name = 'CalculationError';
+          }
+        }
+
     let form = document.querySelector('form');
     form.addEventListener('submit', e => {
       e.preventDefault();
@@ -100,6 +108,11 @@
         if (firstNum === '' || secondNum === '') {
           throw new Error('Both inputs must be filled.');
         }
+        
+        if (isNaN(firstNum) || isNaN(secondNum)) {
+          throw new CalculationError('Inputs must be numbers');
+        }
+
         output.innerHTML = eval(`${firstNum} ${operator} ${secondNum}`);
       } catch (error) {
         console.error('An error has occurred:', error);
