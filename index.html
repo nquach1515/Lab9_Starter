@@ -7,6 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Lab 9</title>
 
+  <script src="https://cdn.trackjs.com/agent/v3/latest/t.js"></script>
+  <script>
+    window.TrackJS && TrackJS.install({ 
+      token: "d269880be02e464c85c4ce839b8eca1d"
+    });
+  </script>
+
   <style>
     button {
       margin: 3px;
@@ -83,11 +90,15 @@
       <button id="start-timer">Start Timer</button>
       <button id="end-timer">End Timer</button>
       <button id="console-trace">Console Trace</button>
-      <button>Trigger a Global Error</button>
+      <button id="global-trigger">Trigger a Global Error</button>
     </section>
   </main>
 
   <script>
+    window.onerror = function (message, source, lineno, colno, error) {
+          console.error('Global error caught:', message);
+          return true; // Prevents the default browser error handling
+        };
 
     class CalculationError extends Error {
           constructor(message) {
@@ -178,6 +189,10 @@
 
     errorBtns[13].addEventListener('click', () => {
       console.trace();
+    });
+
+    document.querySelector('#global-trigger').addEventListener('click', () => {
+      functionThatDoesntExistToCauseError();
     });
   </script>
 </body>
